@@ -20,5 +20,8 @@
 "PID"="1.0"
 "UseInterface"=dword:00000000
 
+[$RootKey$\AutoLoadPackages\{ADFC4E64-0397-11D1-9F4E-00A0C911004F}]
+"{74906b32-d5a9-44fe-ae85-a415dc5ea2cb}"=dword:00000000
+
 
 
