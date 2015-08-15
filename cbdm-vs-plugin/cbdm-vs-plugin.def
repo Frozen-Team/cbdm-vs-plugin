@@ -1,0 +1,7 @@
+﻿; cbdm-vs-plugin.def : Declares the module parameters.
+
+LIBRARY      "cbdm-vs-plugin.DLL"
+
+EXPORTS
+	DllCanUnloadNow            PRIVATE
+	DllGetClassObject          PRIVATE

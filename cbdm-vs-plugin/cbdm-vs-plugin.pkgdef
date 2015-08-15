@@ -1,0 +1,24 @@
+﻿[$RootKey$\Packages\{74906b32-d5a9-44fe-ae85-a415dc5ea2cb}]
+@="cbdm-vs-plugin Package"
+"InprocServer32"="$PackageFolder$\cbdm-vs-plugin.dll"
+"CompanyName"="Frozen Team"
+"ProductName"="CBDM_VS_Plugin"
+"ProductVersion"="1.0.0"
+
+[$RootKey$\Packages\{74906b32-d5a9-44fe-ae85-a415dc5ea2cb}\SatelliteDll]
+"DllName"="cbdm-vs-pluginUI.dll"
+"Path"="$PackageFolder$"
+
+[$RootKey$\Menus]
+"{74906b32-d5a9-44fe-ae85-a415dc5ea2cb}"=", 1000, 1"
+
+[$RootKey$\InstalledProducts\cbdm-vs-plugin]
+@="#100"
+"Package"="{74906b32-d5a9-44fe-ae85-a415dc5ea2cb}"
+"ProductDetails"="#102"
+"LogoID"="#400"
+"PID"="1.0"
+"UseInterface"=dword:00000000
+
+
+

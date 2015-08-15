@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cbdm-vs-plugin", "cbdm-vs-plugin\cbdm-vs-plugin.vcxproj", "{13EAEF0B-E97E-41B4-AA3C-8C222CC3BEAC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7F28374B-7A62-4EBA-8E27-6DCBF3152ADB} = {7F28374B-7A62-4EBA-8E27-6DCBF3152ADB}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cbdm-vs-pluginUI", "cbdm-vs-pluginUi\cbdm-vs-pluginUi.vcxproj", "{7F28374B-7A62-4EBA-8E27-6DCBF3152ADB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cbdm-vs-pluginVSIX", "cbdm-vs-plugin\cbdm-vs-pluginVSIX\cbdm-vs-pluginVSIX.csproj", "{2306CEC9-8FFD-48FF-B648-609FE0D5F58E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13EAEF0B-E97E-41B4-AA3C-8C222CC3BEAC}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{13EAEF0B-E97E-41B4-AA3C-8C222CC3BEAC}.Debug|x86.ActiveCfg = Debug|Win32
+		{13EAEF0B-E97E-41B4-AA3C-8C222CC3BEAC}.Debug|x86.Build.0 = Debug|Win32
+		{13EAEF0B-E97E-41B4-AA3C-8C222CC3BEAC}.Release|Any CPU.ActiveCfg = Release|Win32
+		{13EAEF0B-E97E-41B4-AA3C-8C222CC3BEAC}.Release|x86.ActiveCfg = Release|Win32
+		{13EAEF0B-E97E-41B4-AA3C-8C222CC3BEAC}.Release|x86.Build.0 = Release|Win32
+		{7F28374B-7A62-4EBA-8E27-6DCBF3152ADB}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{7F28374B-7A62-4EBA-8E27-6DCBF3152ADB}.Debug|x86.ActiveCfg = Debug|Win32
+		{7F28374B-7A62-4EBA-8E27-6DCBF3152ADB}.Debug|x86.Build.0 = Debug|Win32
+		{7F28374B-7A62-4EBA-8E27-6DCBF3152ADB}.Release|Any CPU.ActiveCfg = Release|Win32
+		{7F28374B-7A62-4EBA-8E27-6DCBF3152ADB}.Release|x86.ActiveCfg = Release|Win32
+		{7F28374B-7A62-4EBA-8E27-6DCBF3152ADB}.Release|x86.Build.0 = Release|Win32
+		{2306CEC9-8FFD-48FF-B648-609FE0D5F58E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2306CEC9-8FFD-48FF-B648-609FE0D5F58E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2306CEC9-8FFD-48FF-B648-609FE0D5F58E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2306CEC9-8FFD-48FF-B648-609FE0D5F58E}.Debug|x86.Build.0 = Debug|Any CPU
+		{2306CEC9-8FFD-48FF-B648-609FE0D5F58E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2306CEC9-8FFD-48FF-B648-609FE0D5F58E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2306CEC9-8FFD-48FF-B648-609FE0D5F58E}.Release|x86.ActiveCfg = Release|Any CPU
+		{2306CEC9-8FFD-48FF-B648-609FE0D5F58E}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

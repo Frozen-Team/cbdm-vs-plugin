@@ -1,0 +1,34 @@
+﻿// guids.h: definitions of GUIDs/IIDs/CLSIDs used in this VsPackage
+
+/*
+Do not use #pragma once, as this file needs to be included twice.  Once to declare the externs
+for the GUIDs, and again right after including initguid.h to actually define the GUIDs.
+*/
+
+
+
+// package guid
+// { 74906b32-d5a9-44fe-ae85-a415dc5ea2cb }
+#define guidcbdm_vs_pluginPkg { 0x74906B32, 0xD5A9, 0x44FE, { 0xAE, 0x85, 0xA4, 0x15, 0xDC, 0x5E, 0xA2, 0xCB } }
+#ifdef DEFINE_GUID
+DEFINE_GUID(CLSID_cbdm_vs_plugin,
+0x74906B32, 0xD5A9, 0x44FE, 0xAE, 0x85, 0xA4, 0x15, 0xDC, 0x5E, 0xA2, 0xCB );
+#endif
+
+// Command set guid for our commands (used with IOleCommandTarget)
+// { f5444c65-dae1-4387-badd-5f871eccf1fd }
+#define guidcbdm_vs_pluginCmdSet { 0xF5444C65, 0xDAE1, 0x4387, { 0xBA, 0xDD, 0x5F, 0x87, 0x1E, 0xCC, 0xF1, 0xFD } }
+#ifdef DEFINE_GUID
+DEFINE_GUID(CLSID_cbdm_vs_pluginCmdSet, 
+0xF5444C65, 0xDAE1, 0x4387, 0xBA, 0xDD, 0x5F, 0x87, 0x1E, 0xCC, 0xF1, 0xFD );
+#endif
+
+//Guid for the image list referenced in the VSCT file
+// { f32bf503-b428-4754-b24e-d4b4cd83241a }
+#define guidImages { 0xF32BF503, 0xB428, 0x4754, { 0xB2, 0x4E, 0xD4, 0xB4, 0xCD, 0x83, 0x24, 0x1A } }
+#ifdef DEFINE_GUID
+DEFINE_GUID(CLSID_Images, 
+0xF32BF503, 0xB428, 0x4754, 0xB2, 0x4E, 0xD4, 0xB4, 0xCD, 0x83, 0x24, 0x1A );
+#endif
+
+
