@@ -3,8 +3,11 @@
   <Metadata>
     <Identity Id="74906b32-d5a9-44fe-ae85-a415dc5ea2cb" Version="1.0.0" Language="en-US" Publisher="Frozen Team" />
     <DisplayName>CBDM_VS_Plugin</DisplayName>
-    <Description>CBDM plugin for Visual Studio
-TODO</Description>
+    <Description xml:space="preserve">
+      CBDM plugin for Visual Studio
+      TODO
+    </Description>
+    <Tags>cbdm</Tags>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[14.0]" />

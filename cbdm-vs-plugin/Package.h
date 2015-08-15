@@ -17,14 +17,14 @@
 using namespace VSL;
 
 
-class ATL_NO_VTABLE Ccbdm_vs_pluginPackage : 
+class ATL_NO_VTABLE CBDMPackage : 
 	// CComObjectRootEx and CComCoClass are used to implement a non-thread safe COM object, and 
 	// a partial implementation for IUnknown (the COM map below provides the rest).
 	public CComObjectRootEx<CComSingleThreadModel>,
-	public CComCoClass<Ccbdm_vs_pluginPackage, &CLSID_cbdm_vs_plugin>,
+	public CComCoClass<CBDMPackage, &CLSID_cbdm_vs_plugin>,
 	// Provides the implementation for IVsPackage to make this COM object into a VS Package.
-	public IVsPackageImpl<Ccbdm_vs_pluginPackage, &CLSID_cbdm_vs_plugin>,
-	public IOleCommandTargetImpl<Ccbdm_vs_pluginPackage>,
+	public IVsPackageImpl<CBDMPackage, &CLSID_cbdm_vs_plugin>,
+	public IOleCommandTargetImpl<CBDMPackage>,
 	// Provides consumers of this object with the ability to determine which interfaces support
 	// extended error information.
 	public ATL::ISupportErrorInfoImpl<&__uuidof(IVsPackage)>
@@ -33,7 +33,7 @@ public:
 
 // Provides a portion of the implementation of IUnknown, in particular the list of interfaces
 // the Ccbdm_vs_pluginPackage object will support via QueryInterface
-BEGIN_COM_MAP(Ccbdm_vs_pluginPackage)
+BEGIN_COM_MAP(CBDMPackage)
 	COM_INTERFACE_ENTRY(IVsPackage)
 	COM_INTERFACE_ENTRY(IOleCommandTarget)
 	COM_INTERFACE_ENTRY(ISupportErrorInfo)
@@ -43,15 +43,25 @@ END_COM_MAP()
 // copy constructor and assignment operator private (NOTE:  this macro includes the declaration of
 // a private section, so everything following this macro and preceding a public or protected 
 // section will be private).
-VSL_DECLARE_NOT_COPYABLE(Ccbdm_vs_pluginPackage)
+VSL_DECLARE_NOT_COPYABLE(CBDMPackage)
 
 public:
-	Ccbdm_vs_pluginPackage()
+	CBDMPackage()
 	{
+		int a = 2;
+		a *= 4;
+
 	}
 	
-	~Ccbdm_vs_pluginPackage()
+	~CBDMPackage()
 	{
+	}
+
+	void PostSited(IVsPackageEnums::SetSiteResult /*result*/)
+	{
+		int a = 2;
+		a *= 4;
+		//ShowMessage("Hi!");
 	}
 
 
@@ -89,4 +99,4 @@ private:
 // This exposes Ccbdm_vs_pluginPackage for instantiation via DllGetClassObject; however, an instance
 // can not be created by CoCreateInstance, as Ccbdm_vs_pluginPackage is specifically registered with
 // VS, not the the system in general.
-OBJECT_ENTRY_AUTO(CLSID_cbdm_vs_plugin, Ccbdm_vs_pluginPackage)
+OBJECT_ENTRY_AUTO(CLSID_cbdm_vs_plugin, CBDMPackage)
