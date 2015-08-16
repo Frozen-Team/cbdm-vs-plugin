@@ -13,6 +13,12 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx;pkgdef;pkgundef;vsixmanifest</Extensions>
     </Filter>
+    <Filter Include="Header Files\EventsHandlers">
+      <UniqueIdentifier>{e3e214e3-4202-435d-a66c-e91e7c382f27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EventsHandlers">
+      <UniqueIdentifier>{891c04b6-6478-40ed-93cc-7ada290a38e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Guids.cpp">
@@ -22,6 +28,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventsHandlers\HierarchyEventsHandler.cpp">
+      <Filter>Source Files\EventsHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="CbdmFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -39,6 +51,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventsHandlers\HierarchyEventsHandler.h">
+      <Filter>Header Files\EventsHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="CbdmFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

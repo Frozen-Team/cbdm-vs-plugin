@@ -1,5 +1,8 @@
 #pragma once
+
+
 class HierarchyEventsHandler : 
+	public CComObjectRootEx<CComSingleThreadModel>,
 	public IVsHierarchyEvents, 
 	public IVsHierarchyEvents2
 {
@@ -8,6 +11,14 @@ private:
 	VSCOOKIE cookie;
 public:
 	VSL_DECLARE_NOT_COPYABLE(HierarchyEventsHandler)
+
+public:
+	BEGIN_COM_MAP(HierarchyEventsHandler)
+		COM_INTERFACE_ENTRY(IVsHierarchyEvents)
+		COM_INTERFACE_ENTRY(IVsHierarchyEvents2)
+	END_COM_MAP()
+
+
 public:
 	HierarchyEventsHandler();
 
@@ -38,9 +49,9 @@ public:
 	}
 
 	// Inherited via IVsHierarchyEvents
-	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void ** ppvObject) override;
-	virtual ULONG STDMETHODCALLTYPE AddRef(void) override;
-	virtual ULONG STDMETHODCALLTYPE Release(void) override;
+	//virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void ** ppvObject) override;
+	//virtual ULONG STDMETHODCALLTYPE AddRef(void) override;
+	//virtual ULONG STDMETHODCALLTYPE Release(void) override;
 
 
 	virtual HRESULT STDMETHODCALLTYPE OnItemAdded(VSITEMID itemidParent, VSITEMID itemidSiblingPrev, VSITEMID itemidAdded) override;
