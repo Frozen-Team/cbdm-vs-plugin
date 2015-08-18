@@ -1,52 +1,37 @@
 #include "stdafx.h"
 #include "HierarchyEventsHandler.h"
+#include "common.h"
 
 
-HierarchyEventsHandler::HierarchyEventsHandler()
+
+
+
+
+
+
+
+void HierarchyEventsHandler::SetHierarchy(IVsHierarchy * pHierarchy)
 {
-	m_refsCount = 0;
-	ShowMessage(L"HierarchyEventsHandler ctor");
+	this->m_pHierarchy = pHierarchy;
+
+	BSTR name;
+	HRESULT result = this->GetRootName(pHierarchy, &name);
+	VSL_CHECKHRESULT(result);
+	CComBSTR rootName;
+	VSL_CHECKHRESULT(rootName.Append(name));
+	VSL_CHECKHRESULT(rootName.Append(L':'));
+	std::vector<CAdapt<CComBSTR>> vsHierarchy;
+	VSITEMID firstChild;
+	result = GetChildItemId(this->m_pHierarchy, VSITEMID_ROOT, firstChild, true);
+	VSL_CHECKHRESULT(result);
+
+	WalkHierarchyItems(this->m_pHierarchy, firstChild, rootName, vsHierarchy, 0, true);
+	StartHierarchyWriter(rootName.Detach());
 }
-
-
-HierarchyEventsHandler::~HierarchyEventsHandler()
-{
-	ShowMessage(L"HierarchyEventsHandler dtor");
-}
-
-//HRESULT HierarchyEventsHandler::QueryInterface(REFIID riid, void ** ppvObject)
-//{
-//	if (!ppvObject)
-//		return E_INVALIDARG;
-//	*ppvObject = NULL;
-//	if (riid == IID_IUnknown || riid == IID_IVsHierarchyEvents || riid == IID_IVsHierarchyEvents2)
-//	{
-//		*ppvObject = (LPVOID)this;
-//		AddRef();
-//		return NOERROR;
-//	}
-//	return E_NOINTERFACE;
-//}
-//
-//ULONG HierarchyEventsHandler::AddRef(void)
-//{
-//	return InterlockedIncrement(&m_refsCount);
-//}
-//
-//ULONG HierarchyEventsHandler::Release(void)
-//{
-//	ULONG result = InterlockedDecrement(&m_refsCount);
-//
-//	if (m_refsCount == 0)
-//	{
-//		delete this;
-//	}
-//
-//	return result;
-//}
 
 HRESULT HierarchyEventsHandler::OnItemAdded(VSITEMID itemidParent, VSITEMID itemidSiblingPrev, VSITEMID itemidAdded)
 {
+	
 	ShowMessage(L"HierarchyEventsHandler::OnItemAdded");
 
 	return S_OK;
@@ -75,21 +60,27 @@ HRESULT HierarchyEventsHandler::OnPropertyChanged(VSITEMID itemid, VSHPROPID pro
 
 HRESULT HierarchyEventsHandler::OnInvalidateItems(VSITEMID itemidParent)
 {
-	ShowMessage(L"HierarchyEventsHandler::OnInvalidateItems");
+	
+	//ShowMessage(L"HierarchyEventsHandler::OnInvalidateItems");
 
 	return S_OK;
 }
 
 HRESULT HierarchyEventsHandler::OnInvalidateIcon(HICON hicon)
 {
-	ShowMessage(L"HierarchyEventsHandler::OnInvalidateIcon");
-
 	return S_OK;
 }
 
 HRESULT HierarchyEventsHandler::OnItemAdded(VSITEMID itemidParent, VSITEMID itemidSiblingPrev, VSITEMID itemidAdded, VARIANT_BOOL ensureVisible)
 {
 	ShowMessage(L"HierarchyEventsHandler::OnItemAdded2");
+	VARIANT var;
+	if (m_pHierarchy)
+	{
+		CComBSTR name;
+		HRESULT res = GetNodeName(m_pHierarchy, itemidAdded, name);
+		res = m_pHierarchy->GetProperty(itemidAdded, VSHPROPID_Name, &var);
+	}
 
 	return S_OK;
 }

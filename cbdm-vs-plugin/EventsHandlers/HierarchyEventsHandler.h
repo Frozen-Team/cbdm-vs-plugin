@@ -1,14 +1,18 @@
 #pragma once
 
+#include "HierarchyFileWriter.h"
+#include "ItemsInfoProvider.h"
 
 class HierarchyEventsHandler : 
 	public CComObjectRootEx<CComSingleThreadModel>,
+	private HierarchyFileWriter,
+	private ItemsInfoProvider,
 	public IVsHierarchyEvents, 
 	public IVsHierarchyEvents2
 {
 private:
-	ULONG m_refsCount;
-	VSCOOKIE cookie;
+	VSCOOKIE m_cookie;
+	IVsHierarchy* m_pHierarchy;
 public:
 	VSL_DECLARE_NOT_COPYABLE(HierarchyEventsHandler)
 
@@ -18,13 +22,23 @@ public:
 		COM_INTERFACE_ENTRY(IVsHierarchyEvents2)
 	END_COM_MAP()
 
+private:
+	//HRESULT GetNodeName(IVsHierarchy* pHierarchy, VSITEMID itemId, CComBSTR& name);
+
+	//HRESULT GetRootName(CComBSTR& name);
+
+
 
 public:
-	HierarchyEventsHandler();
+	HierarchyEventsHandler() : HierarchyFileWriter() {};
 
-	virtual ~HierarchyEventsHandler();
-	void setCookie(VSCOOKIE cookie) { this->cookie = cookie; }
-	VSCOOKIE getCookie() { return this->cookie; }
+	virtual ~HierarchyEventsHandler() {}
+
+	void SetHierarchy(IVsHierarchy* pHierarchy);
+
+
+	void setCookie(VSCOOKIE cookie) { this->m_cookie = cookie; }
+	VSCOOKIE getCookie() { return this->m_cookie; }
 
 	void ShowMessage(CComBSTR message)
 	{
@@ -49,11 +63,6 @@ public:
 	}
 
 	// Inherited via IVsHierarchyEvents
-	//virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void ** ppvObject) override;
-	//virtual ULONG STDMETHODCALLTYPE AddRef(void) override;
-	//virtual ULONG STDMETHODCALLTYPE Release(void) override;
-
-
 	virtual HRESULT STDMETHODCALLTYPE OnItemAdded(VSITEMID itemidParent, VSITEMID itemidSiblingPrev, VSITEMID itemidAdded) override;
 	virtual HRESULT STDMETHODCALLTYPE OnItemsAppended(VSITEMID itemidParent) override;
 	virtual HRESULT STDMETHODCALLTYPE OnItemDeleted(VSITEMID itemid) override;

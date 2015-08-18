@@ -3,23 +3,24 @@
 
 
 CbdmFactory::CbdmFactory()
-{
-	ShowMessage(L"SolutionEventsHandler ctor");
-}
+{}
 
 
 CbdmFactory::~CbdmFactory()
 {
-	ShowMessage(L"SolutionEventsHandler dtor");
+	OutputDebugString(L"\n\n==============SolutionEventsHandler dtor==============\n\n");
 }
+
+
 
 HRESULT CbdmFactory::OnAfterOpenProject(IVsHierarchy * pHierarchy, BOOL fAdded)
 {
-	ShowMessage(L"EventsHandler OnAfterOpenProject");
-	handlers[pHierarchy] = new CComObject<HierarchyEventsHandler>;
-	VSCOOKIE adviceHierarchyEventsHandler;
-	HRESULT res = pHierarchy->AdviseHierarchyEvents(handlers[pHierarchy].m_T, &adviceHierarchyEventsHandler);
-	handlers[pHierarchy]->setCookie(adviceHierarchyEventsHandler);
+	CComPtr<HierarchyEventsHandler> pHierarchyEventsHandler = new CComObject<HierarchyEventsHandler>;
+	pHierarchyEventsHandler->SetHierarchy(pHierarchy);
+
+	VSCOOKIE adviseCookie;
+	HRESULT res = pHierarchy->AdviseHierarchyEvents(pHierarchyEventsHandler, &adviseCookie);
+	//pHierarchyEventsHandler->setCookie(adviseCookie);
 
 	return res;
 }
@@ -32,14 +33,14 @@ HRESULT CbdmFactory::OnQueryCloseProject(IVsHierarchy * pHierarchy, BOOL fRemovi
 HRESULT CbdmFactory::OnBeforeCloseProject(IVsHierarchy * pHierarchy, BOOL fRemoved)
 {
 	//pHierarchy->UnadviseHierarchyEvents(handlers[pHierarchy]->getCookie());
-	//handlers.erase(pHierarchy);	
-
+	//handlers.erase(pHierarchy);
 
 	return S_OK;
 }
 
 HRESULT CbdmFactory::OnAfterLoadProject(IVsHierarchy * pStubHierarchy, IVsHierarchy * pRealHierarchy)
 {
+
 	return S_OK;
 }
 
@@ -56,6 +57,10 @@ HRESULT CbdmFactory::OnBeforeUnloadProject(IVsHierarchy * pRealHierarchy, IVsHie
 HRESULT CbdmFactory::OnAfterOpenSolution(IUnknown * pUnkReserved, BOOL fNewSolution)
 {
 	ShowMessage(L"EventsHandler::OnAfterOpenSolution");
+
+
+	//HRESULT result = WalkHierarchyItems(VSITEMID_ROOT, m_pHierarchy, 0, true);
+
 	return S_OK;
 }
 
