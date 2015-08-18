@@ -163,6 +163,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="HierarchyFileWriter.cpp" />
+    <ClCompile Include="ItemsInfoProvider.cpp" />
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -174,9 +176,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CbdmFactory.h" />
+    <ClInclude Include="common.h" />
     <ClInclude Include="CommonIncludes.h" />
     <ClInclude Include="EventsHandlers\HierarchyEventsHandler.h" />
     <ClInclude Include="Guids.h" />
+    <ClInclude Include="HierarchyFileWriter.h" />
+    <ClInclude Include="ItemsInfoProvider.h" />
     <ClInclude Include="Package.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="StdAfx.h" />
