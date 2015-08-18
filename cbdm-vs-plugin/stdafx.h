@@ -5,6 +5,10 @@
 
 #pragma once
 
+
+#include <fstream>
+#include <vector>
+
 // Windows Platform headers and control defines
 #define STRICT
 #define _WIN32_WINNT 0x0500 // Visual Studio requires Windows 2000 or better
