@@ -12,7 +12,6 @@ class HierarchyEventsHandler :
 {
 private:
 	VSCOOKIE m_cookie;
-	IVsHierarchy* m_pHierarchy;
 public:
 	VSL_DECLARE_NOT_COPYABLE(HierarchyEventsHandler)
 
@@ -25,7 +24,7 @@ public:
 private:
 	//HRESULT GetNodeName(IVsHierarchy* pHierarchy, VSITEMID itemId, CComBSTR& name);
 
-	//HRESULT GetRootName(CComBSTR& name);
+	//HRESULT GetProjectName(CComBSTR& name);
 
 
 

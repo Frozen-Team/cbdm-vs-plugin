@@ -4,51 +4,38 @@
 
 
 ItemsInfoProvider::ItemsInfoProvider()
-{}
-
+{
+	m_pHierarchy = nullptr;
+}
 
 ItemsInfoProvider::~ItemsInfoProvider()
 {}
 
-// To delete, deprecated
-HRESULT ItemsInfoProvider::GetNodeName(IVsHierarchy* pHierarchy, VSITEMID itemId, CComBSTR& name)
+HRESULT ItemsInfoProvider::CheckHierarchyPointer()
 {
-	if (pHierarchy == nullptr)
+	if (m_pHierarchy == nullptr)
 	{
 		return E_FAIL;
 	}
-
-	VARIANT vTypeName;
-
-	HRESULT r1 = pHierarchy->GetProperty(itemId, VSHPROPID_TypeGuid, &vTypeName);
-
-	VARIANT value;
-	HRESULT result = pHierarchy->GetProperty(itemId, VSHPROPID_Name, &value);
-
-	if (result == S_OK && value.bstrVal != nullptr)
-	{
-		name.AssignBSTR(value.bstrVal);
-	}
-	else
-	{
-		return result;
-	}
-
-	BSTR canonical;
-
-	result = pHierarchy->GetCanonicalName(itemId, &canonical);
-
-	return result;
+	return S_OK;
 }
 
-HRESULT ItemsInfoProvider::GetItemName(IVsHierarchy* pHierarchy, VSITEMID itemId,  BSTR* name)
+HRESULT ItemsInfoProvider::SetHierarchyPointer(IVsHierarchy * pHierarchy)
 {
 	if (pHierarchy == nullptr)
 	{
 		return E_FAIL;
 	}
+	m_pHierarchy = pHierarchy;
+
+	return S_OK;
+}
+
+HRESULT ItemsInfoProvider::GetItemName(VSITEMID itemId,  BSTR* name)
+{
+	VSL_CHECKHRESULT(CheckHierarchyPointer());
 	VARIANT var;
-	HRESULT result = pHierarchy->GetProperty(itemId, VSHPROPID_Name, &var);
+	HRESULT result = m_pHierarchy->GetProperty(itemId, VSHPROPID_Name, &var);
 	if (result == S_OK && var.bstrVal != nullptr)
 	{
 		*name = var.bstrVal;
@@ -57,15 +44,16 @@ HRESULT ItemsInfoProvider::GetItemName(IVsHierarchy* pHierarchy, VSITEMID itemId
 	return result;
 }
 
-HRESULT ItemsInfoProvider::GetRootName(IVsHierarchy* pHierarchy, BSTR* name)
+HRESULT ItemsInfoProvider::GetProjectName(BSTR* name)
 {
-	return GetItemName(pHierarchy, VSITEMID_ROOT, name);
+	return GetItemName(VSITEMID_ROOT, name);
 }
 
-HRESULT ItemsInfoProvider::GetChildItemId(IVsHierarchy* pHierarchy, VSITEMID itemId, VSITEMID& childItemId, int visibleOnly)
+HRESULT ItemsInfoProvider::GetFirstChildItemId(VSITEMID itemId, VSITEMID& childItemId, int visibleOnly)
 {
+	VSL_CHECKHRESULT(CheckHierarchyPointer());
 	VARIANT var;
-	HRESULT result = pHierarchy->GetProperty(itemId, (visibleOnly ? VSHPROPID_FirstVisibleChild : VSHPROPID_FirstChild), &var);
+	HRESULT result = m_pHierarchy->GetProperty(itemId, (visibleOnly ? VSHPROPID_FirstVisibleChild : VSHPROPID_FirstChild), &var);
 	if (result == S_OK)
 	{
 		childItemId = var.intVal;
@@ -74,15 +62,17 @@ HRESULT ItemsInfoProvider::GetChildItemId(IVsHierarchy* pHierarchy, VSITEMID ite
 	return result;
 }
 
-HRESULT ItemsInfoProvider::IsVirtualFolder(IVsHierarchy * pHierarchy, VSITEMID itemId, int & isVirtual)
+HRESULT ItemsInfoProvider::GetItemType(VSITEMID itemId, GUID * type)
 {
-	if (pHierarchy == nullptr)
-	{
-		return E_FAIL;
-	}
 
+	return S_OK;
+}
+
+HRESULT ItemsInfoProvider::IsVirtualFolder(VSITEMID itemId, int & isVirtual)
+{
+	VSL_CHECKHRESULT(CheckHierarchyPointer());
 	VARIANT var;
-	HRESULT result = pHierarchy->GetProperty(itemId, VSHPROPID_ExtObject, &var);
+	HRESULT result = m_pHierarchy->GetProperty(itemId, VSHPROPID_ExtObject, &var);
 
 	ProjectItem* pProjectItem = (ProjectItem*)var.byref;
 	if (result != S_OK || pProjectItem == nullptr)
@@ -112,28 +102,29 @@ HRESULT ItemsInfoProvider::IsVirtualFolder(IVsHierarchy * pHierarchy, VSITEMID i
 	return S_OK;
 }
 
-HRESULT ItemsInfoProvider::WalkHierarchyItems(IVsHierarchy* pHierarchy, VSITEMID itemId, BSTR basePath, std::vector<CAdapt<CComBSTR>>& vsHierarchy,
+HRESULT ItemsInfoProvider::GetProjectPath(BSTR * path)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT ItemsInfoProvider::GetProjectDir(BSTR * dir)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT ItemsInfoProvider::WalkHierarchyItems(VSITEMID itemId, BSTR basePath, std::vector<CAdapt<CComBSTR>>& vsHierarchy,
 	 int recursionLevel, bool visibleNodesOnly)
 {
-	if (pHierarchy == nullptr)
-	{
-		return S_FALSE;
-	}
-
+	VSL_CHECKHRESULT(CheckHierarchyPointer());
 	VARIANT var;
-
-
-
-
-
 
 	recursionLevel++;
 	//Get the first child node of the current hierarchy being walked
-	HRESULT result = pHierarchy->GetProperty(itemId, (visibleNodesOnly ? VSHPROPID_FirstVisibleChild : VSHPROPID_FirstChild), &var);
+	HRESULT result = m_pHierarchy->GetProperty(itemId, (visibleNodesOnly ? VSHPROPID_FirstVisibleChild : VSHPROPID_FirstChild), &var);
 	VSL_CHECKHRESULT(result);
 
 	BSTR name;
-	result = GetItemName(pHierarchy, itemId, &name); // get parent name
+	result = GetItemName(itemId, &name); // get parent name
 	VSL_CHECKHRESULT(result);
 
 	CComBSTR newBasePath(L""); // create new BSTR object
@@ -149,15 +140,17 @@ HRESULT ItemsInfoProvider::WalkHierarchyItems(IVsHierarchy* pHierarchy, VSITEMID
 		while (childId != VSITEMID_NIL)
 		{
 			BSTR newSiblingName;
-			result = GetItemName(pHierarchy, childId, &newSiblingName);
+			result = GetItemName(childId, &newSiblingName);
 
-			HRESULT result = pHierarchy->GetProperty(childId, VSHPROPID_ExtObject, &var);
+			HRESULT result = m_pHierarchy->GetProperty(childId, VSHPROPID_ExtObject, &var);
 			//VSL_CHECKHRESULT(result);
 
 
 			ProjectItem* pProjectItem = (ProjectItem*)var.byref;
 			if (pProjectItem != nullptr)
 			{
+				int isVirtual = 0;
+				HRESULT rr = IsVirtualFolder(childId, isVirtual);
 
 				BSTR strName;
 				pProjectItem->get_Name(&strName);
@@ -188,8 +181,8 @@ HRESULT ItemsInfoProvider::WalkHierarchyItems(IVsHierarchy* pHierarchy, VSITEMID
 			newSiblingPath.Append(newSiblingName);
 			vsHierarchy.push_back(CComBSTR(newSiblingPath.Detach()));
 
-			WalkHierarchyItems(pHierarchy, childId, newBasePath, vsHierarchy, recursionLevel, visibleNodesOnly);
-			result = pHierarchy->GetProperty(childId, (visibleNodesOnly ? VSHPROPID_NextVisibleSibling : VSHPROPID_NextSibling), &var);
+			WalkHierarchyItems(childId, newBasePath, vsHierarchy, recursionLevel, visibleNodesOnly);
+			result = m_pHierarchy->GetProperty(childId, (visibleNodesOnly ? VSHPROPID_NextVisibleSibling : VSHPROPID_NextSibling), &var);
 
 			if (result == S_OK)
 			{
@@ -197,9 +190,6 @@ HRESULT ItemsInfoProvider::WalkHierarchyItems(IVsHierarchy* pHierarchy, VSITEMID
 
 
 				//vsHierarchy.push_back(newBasePath);
-
-
-
 
 			}
 			else

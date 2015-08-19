@@ -3,30 +3,21 @@
 #include "common.h"
 
 
-
-
-
-
-
-
-
 void HierarchyEventsHandler::SetHierarchy(IVsHierarchy * pHierarchy)
 {
 	this->m_pHierarchy = pHierarchy;
 
 	BSTR name;
-	HRESULT result = this->GetRootName(pHierarchy, &name);
+	HRESULT result = GetProjectName(&name);
 	VSL_CHECKHRESULT(result);
 	CComBSTR rootName;
 	VSL_CHECKHRESULT(rootName.Append(name));
 	VSL_CHECKHRESULT(rootName.Append(L':'));
 	std::vector<CAdapt<CComBSTR>> vsHierarchy;
 	VSITEMID firstChild;
-	result = GetChildItemId(this->m_pHierarchy, VSITEMID_ROOT, firstChild, true);
+	result = GetFirstChildItemId(VSITEMID_ROOT, firstChild, true);
 	VSL_CHECKHRESULT(result);
-
-	WalkHierarchyItems(this->m_pHierarchy, firstChild, rootName, vsHierarchy, 0, true);
-	StartHierarchyWriter(rootName.Detach());
+	WalkHierarchyItems(firstChild, rootName, vsHierarchy, 0, true);
 }
 
 HRESULT HierarchyEventsHandler::OnItemAdded(VSITEMID itemidParent, VSITEMID itemidSiblingPrev, VSITEMID itemidAdded)
@@ -73,14 +64,14 @@ HRESULT HierarchyEventsHandler::OnInvalidateIcon(HICON hicon)
 
 HRESULT HierarchyEventsHandler::OnItemAdded(VSITEMID itemidParent, VSITEMID itemidSiblingPrev, VSITEMID itemidAdded, VARIANT_BOOL ensureVisible)
 {
-	ShowMessage(L"HierarchyEventsHandler::OnItemAdded2");
+	ShowMessage(L"HierarchyEventsHandler::OnItemAdded2");/*
 	VARIANT var;
 	if (m_pHierarchy)
 	{
 		CComBSTR name;
 		HRESULT res = GetNodeName(m_pHierarchy, itemidAdded, name);
 		res = m_pHierarchy->GetProperty(itemidAdded, VSHPROPID_Name, &var);
-	}
+	}*/
 
 	return S_OK;
 }

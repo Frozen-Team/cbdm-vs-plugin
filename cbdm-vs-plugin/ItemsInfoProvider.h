@@ -6,19 +6,31 @@ public:
 	virtual ~ItemsInfoProvider();
 
 protected:
-	HRESULT IsVirtualFolder(IVsHierarchy* pHierarchy, VSITEMID itemId, int& isVirtual);
+	IVsHierarchy* m_pHierarchy;
 
-	HRESULT GetChildItemId(IVsHierarchy* pHierarchy, VSITEMID itemId,  VSITEMID& childItemId, int visibleOnly);
+private:
+	HRESULT CheckHierarchyPointer();
 
-	HRESULT GetItemName(IVsHierarchy* pHierarchy, VSITEMID itemId, BSTR* name);
+protected:
+	
+	HRESULT SetHierarchyPointer(IVsHierarchy* pHierarchy);
 
-	HRESULT GetRootName(IVsHierarchy* pHierarchy, BSTR* name);
+	HRESULT GetFirstChildItemId(VSITEMID itemId,  VSITEMID& childItemId, int visibleOnly);
 
-	HRESULT WalkHierarchyItems(IVsHierarchy* pHierarchy, VSITEMID itemId, BSTR basePath, 
+	HRESULT GetItemType(VSITEMID itemId, GUID* type);
+
+	HRESULT IsVirtualFolder(VSITEMID itemId, int& isVirtual);
+
+	HRESULT GetItemName(VSITEMID itemId, BSTR* name);
+
+	HRESULT GetProjectName(BSTR* name);
+	
+	HRESULT GetProjectPath(BSTR* path);
+
+	HRESULT GetProjectDir(BSTR* dir);
+
+	HRESULT WalkHierarchyItems(VSITEMID itemId, BSTR basePath, 
 		std::vector<CAdapt<CComBSTR>>& vsHierarchy, int recursionLevel, bool visibleNodesOnly);
-
-	// To delete, deprecated
-	HRESULT GetNodeName(IVsHierarchy* pHierarchy, VSITEMID itemId, CComBSTR& name);
 
 	
 
