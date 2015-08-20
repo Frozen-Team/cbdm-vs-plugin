@@ -86,12 +86,19 @@ HRESULT ItemsInfoProvider::GetItemType(VSITEMID itemId, GUID * type)
 
 	return S_OK;
 }
+
+HRESULT ItemsInfoProvider::IsItemType(VSITEMID itemId, const GUID & compareTo, int & isItemType)
+{
+	GUID type;
+	VSL_CHECKHRESULT(GetItemType(itemId, &type));
+
+	if (type == compareTo)
 	{
-		isVirtual = true;
+		isItemType = true;
 	}
 	else
 	{
-		isVirtual = false;
+		isItemType = false;
 	}
 
 	return S_OK;
