@@ -19,7 +19,11 @@ protected:
 
 	HRESULT GetItemType(VSITEMID itemId, GUID* type);
 
-	HRESULT IsVirtualFolder(VSITEMID itemId, int& isVirtual);
+	HRESULT IsItemType(VSITEMID itemId, const GUID& compareTo, int& isItemType);
+
+	//HRESULT IsVirtualFolderItem(VSITEMID itemId, int& isVirtual);
+
+	//HRESULT IsProjectItem(VSITEMID itemId, int & isProject);
 
 	HRESULT GetItemName(VSITEMID itemId, BSTR* name);
 
