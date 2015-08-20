@@ -99,7 +99,22 @@ HRESULT ItemsInfoProvider::GetItemType(VSITEMID itemId, GUID * type)
 
 HRESULT ItemsInfoProvider::GetProjectPath(BSTR * path)
 {
-	return E_NOTIMPL;
+	VSL_CHECKHRESULT(CheckHierarchyPointer());
+	VSL_CHECKPOINTER_DEFAULT(path);
+
+	VARIANT obj;
+	HRESULT hr = m_pHierarchy->GetProperty(VSITEMID_ROOT, VSHPROPID_ExtObject, &obj);
+
+	VSL_CHECKHRESULT(hr);
+
+	Project* pProject = (Project*)obj.byref;
+	if (hr != S_OK || pProject == nullptr)
+	{
+		return E_FAIL;
+	}
+	pProject->get_FullName(path);
+
+	return S_OK;
 }
 
 HRESULT ItemsInfoProvider::GetProjectDir(BSTR * dir)
