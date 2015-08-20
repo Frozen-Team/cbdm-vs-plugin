@@ -64,33 +64,28 @@ HRESULT ItemsInfoProvider::GetFirstChildItemId(VSITEMID itemId, VSITEMID& childI
 
 HRESULT ItemsInfoProvider::GetItemType(VSITEMID itemId, GUID * type)
 {
-
-	return S_OK;
-}
-
-HRESULT ItemsInfoProvider::IsVirtualFolder(VSITEMID itemId, int & isVirtual)
-{
 	VSL_CHECKHRESULT(CheckHierarchyPointer());
+
 	VARIANT var;
-	HRESULT result = m_pHierarchy->GetProperty(itemId, VSHPROPID_ExtObject, &var);
+	HRESULT hr = m_pHierarchy->GetProperty(itemId, VSHPROPID_ExtObject, &var);
+
+	VSL_CHECKHRESULT(hr);
 
 	ProjectItem* pProjectItem = (ProjectItem*)var.byref;
-	if (result != S_OK || pProjectItem == nullptr)
+	if (hr != S_OK || pProjectItem == nullptr)
 	{
 		return E_FAIL;
 	}
-	BSTR kindBstr;
-	pProjectItem->get_Kind(&kindBstr);
 
-	GUID kindGuid;
-	result = CLSIDFromString(kindBstr, &kindGuid);
-	
-	if (result != S_OK)
-	{
-		return result;
-	}
+	BSTR bstrType;
+	pProjectItem->get_Kind(&bstrType);
 
-	if (kindGuid == GUID_ItemType_VirtualFolder)
+	VSL_CHECKHRESULT(CLSIDFromString(bstrType, type));
+
+	::SysFreeString(bstrType); // release memory
+
+	return S_OK;
+}
 	{
 		isVirtual = true;
 	}
