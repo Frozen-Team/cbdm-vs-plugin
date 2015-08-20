@@ -104,7 +104,21 @@ HRESULT ItemsInfoProvider::GetProjectPath(BSTR * path)
 
 HRESULT ItemsInfoProvider::GetProjectDir(BSTR * dir)
 {
-	return E_NOTIMPL;
+	BSTR projectPath;
+	VSL_CHECKHRESULT(GetProjectPath(&projectPath));
+
+	wchar_t dirBuffer[MAX_PATH] = { 0 };
+	VSL_CHECKBOOLEAN(wcscpy_s(dirBuffer, MAX_PATH, projectPath) == 0, ERROR_INSUFFICIENT_BUFFER);
+	PathRemoveFileSpec(dirBuffer);
+
+	BSTR allocBstr = ::SysAllocString(dirBuffer);
+	VSL_CHECKPOINTER(allocBstr, ERROR_NOT_ENOUGH_MEMORY);
+	
+	*dir = allocBstr;
+
+	::SysFreeString(projectPath);
+
+	return S_OK;
 }
 
 HRESULT ItemsInfoProvider::WalkHierarchyItems(VSITEMID itemId, BSTR basePath, std::vector<CAdapt<CComBSTR>>& vsHierarchy,
