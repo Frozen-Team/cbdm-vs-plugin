@@ -2,6 +2,7 @@
 #include "ItemsInfoProvider.h"
 #include "common.h"
 
+// TODO: replace all custom checks to VSL_* checks
 
 ItemsInfoProvider::ItemsInfoProvider()
 {
@@ -22,20 +23,23 @@ HRESULT ItemsInfoProvider::CheckHierarchyPointer()
 
 HRESULT ItemsInfoProvider::SetHierarchyPointer(IVsHierarchy * pHierarchy)
 {
-	if (pHierarchy == nullptr)
-	{
-		return E_FAIL;
-	}
-	m_pHierarchy = pHierarchy;
+	this->m_pHierarchy = pHierarchy;
+	HRESULT hr = CheckHierarchyPointer();
 
-	return S_OK;
+	VSL_CHECKHRESULT(hr);
+
+	return hr;
 }
 
 HRESULT ItemsInfoProvider::GetItemName(VSITEMID itemId,  BSTR* name)
 {
 	VSL_CHECKHRESULT(CheckHierarchyPointer());
+
 	VARIANT var;
 	HRESULT result = m_pHierarchy->GetProperty(itemId, VSHPROPID_Name, &var);
+
+	VSL_CHECKHRESULT(result);
+
 	if (result == S_OK && var.bstrVal != nullptr)
 	{
 		*name = var.bstrVal;
@@ -52,14 +56,18 @@ HRESULT ItemsInfoProvider::GetProjectName(BSTR* name)
 HRESULT ItemsInfoProvider::GetFirstChildItemId(VSITEMID itemId, VSITEMID& childItemId, int visibleOnly)
 {
 	VSL_CHECKHRESULT(CheckHierarchyPointer());
+
 	VARIANT var;
-	HRESULT result = m_pHierarchy->GetProperty(itemId, (visibleOnly ? VSHPROPID_FirstVisibleChild : VSHPROPID_FirstChild), &var);
-	if (result == S_OK)
+	HRESULT hr = m_pHierarchy->GetProperty(itemId, (visibleOnly ? VSHPROPID_FirstVisibleChild : VSHPROPID_FirstChild), &var);
+
+	VSL_CHECKHRESULT(hr);
+
+	if (hr == S_OK)
 	{
 		childItemId = var.intVal;
 	}
 
-	return result;
+	return hr;
 }
 
 HRESULT ItemsInfoProvider::GetItemType(VSITEMID itemId, GUID * type)
